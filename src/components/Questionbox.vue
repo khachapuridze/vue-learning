@@ -10,8 +10,8 @@
 
     <b-list-group>
       <b-list-group-item  
-      @click.prevent="select(index)" 
-      v-bind:class="submited(index)"
+      @click="select(index)" 
+      v-bind:class="submited(selected)"
        v-bind:key="index" v-for="(ans,index) in answers">{{ans}}</b-list-group-item>
     </b-list-group>
     <b-button @click="prev" variant="primary" href="#">prev</b-button>
@@ -63,23 +63,26 @@ export default {
         this.submit = true;
       }
       ,
-      submited(index) {
+      submited(selected) {
+        // console.log(index)
+        console.log(this.selected);
         let className = ''
 
-        switch (index) {
-          case this.correctIndex && this.submit:
-            className = "correct"
-            break;
+          switch (selected) {
+            case this.correctIndex:
+              className = "correct"
+              break;
 
-          case this.selected:
-            className = "selected"
-          break;
-        
-          default:
-            className = ''
+            case this.select:
+              className = "selected"
             break;
+          
+            default:
+              className = ''
+              break;
         }
         return className;
+        
 
         
 
