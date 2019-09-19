@@ -3,6 +3,9 @@
     <Header 
       v-if="questions.length"
       :qurrentQuestion="questions[index]"
+      :questions = questions
+      :index = index
+      :countcorrect = countcorrect
     />
     <b-container class="bv-example-row">
   <b-row>

@@ -1,8 +1,9 @@
 <template>
 <div>
+  <h1>Correct answers {{ this.shuffleAnswers[this.correctIndex]}}</h1>
   <b-jumbotron >
 
-    <template slot="lead">
+    <template >
         {{qurrentQuestion.question}}
     </template>
 
@@ -11,12 +12,14 @@
     <b-list-group>
       <b-list-group-item  
       @click="select(index)" 
-      v-bind:class="submited(selected)"
+      v-bind:class="[
+       answered &&  selected === index && selected === correctIndex ? 'correct': 
+       
+        answered && selected === index && selected !== correctIndex ? 'wrong' : ''
+      ]"
        v-bind:key="index" v-for="(ans,index) in answers">{{ans}}</b-list-group-item>
     </b-list-group>
     <b-button @click="prev" variant="primary" href="#">prev</b-button>
-
-    <b-button @click="clicked()" variant="primary" href="#">Submit</b-button>
     <b-button @click="next" variant="success" href="#">Next</b-button>
   </b-jumbotron>
 </div>
@@ -32,9 +35,10 @@ export default {
     },
     data() {
       return {
+        countcorrect: null,
         selected: null,
+        answered: false,
         correctIndex: 0,
-        submit: false,
         correct: false,
         shuffleAnswers: []
       }
@@ -50,44 +54,21 @@ export default {
       qurrentQuestion() {
         this.selected  = null;
         this.shuffledAnswers();
+        
       }
     },
     methods: {
       select(index) {
 
-        this.selected = index
-        
-
-      },
-      clicked() {
-        this.submit = true;
-      }
-      ,
-      submited(selected) {
-        // console.log(index)
-        console.log(this.selected);
-        let className = ''
-
-          switch (selected) {
-            case this.correctIndex:
-              className = "correct"
-              break;
-
-            case this.select:
-              className = "selected"
-            break;
-          
-            default:
-              className = ''
-              break;
+        this.selected = index;
+        if (this.selected === this.correctIndex) {
+          this.correct =true;
+          this.countcorrect++;
         }
-        return className;
+        console.log(this.countcorrect)
+        this.answered = true;
         
-
-        
-
-      }
-      ,
+      },
       shuffledAnswers() {
             let answers = [...this.qurrentQuestion.incorrect_answers]
             answers.push(this.qurrentQuestion.correct_answer);
